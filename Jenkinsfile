@@ -7,7 +7,7 @@ pipeline {
                     //Condition Check logic
                     echo "Hi mom"
                     systemctl is-active /*--quiet*/ docker || echo "Service is not running"
-                    echo "By mom"
+                    echo "By mum"
                     //Steps to perform
                     /* 
                     apt update
