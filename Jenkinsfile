@@ -5,6 +5,7 @@ pipeline {
             steps {
                 echo "Hello, world"
                 echo "Hi mom"
+                touch fizz
             }
         }
     }
