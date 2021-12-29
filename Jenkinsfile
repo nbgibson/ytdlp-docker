@@ -4,6 +4,7 @@ pipeline {
         stage('Docker Setup') {
             steps {
                 //Condition Check logic
+                echo "Hi mom"
                 systemctl is-active --quiet docker || echo "Service is not running"
                 
                 //Steps to perform
