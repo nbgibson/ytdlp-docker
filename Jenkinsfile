@@ -4,6 +4,7 @@ pipeline {
         stage('Docker Setup') {
             steps {
                 echo "Hello, world"
+                echo "Hi mom"
             }
         }
     }
