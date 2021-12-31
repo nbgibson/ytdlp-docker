@@ -1,19 +1,21 @@
 pipeline {
     agent any
     stages {
-        stage('Docker Install') {
-            when {
-                expression {
-                    sh '''
+        stage('Docker Check') {
+            steps {
+                sh '''
                     if (systemctl is-active --quiet docker) {
-                        return true
+                        export dockerInstall=true
                     }
                     else {
-                        return false
+                        export dockerIntall=false
                     }
-                    '''
-                }     
+                '''
             }
+        }
+        
+        stage('Docker Install') {
+            when { environment name: 'dockerInstall', value: 'false' }
             steps {
                 sh '''
                     echo "Installing docker..."
