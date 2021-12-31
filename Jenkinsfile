@@ -4,12 +4,10 @@ pipeline {
         stage('Docker Check') {
             steps {
                 sh '''
-                    if (systemctl is-active --quiet docker) {
+                    if (systemctl is-active --quiet docker) ; then
                         export dockerInstall=true
-                    }
-                    else {
+                    else
                         export dockerIntall=false
-                    }
                 '''
             }
         }
