@@ -14,6 +14,13 @@ pipeline {
                 '''
             }
         }
+        stage('Var sanity check') {
+            steps {
+                sh '''
+                    echo $dockerInstall
+                '''
+            }
+        }
         
         stage('Docker Install') {
             when { environment name: 'dockerInstall', value: 'false' }
