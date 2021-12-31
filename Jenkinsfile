@@ -4,9 +4,7 @@ pipeline {
         stage('Docker Setup') {
             steps {
                 sh '''
-                    echo "Hello, world"
-                    echo "Hi mom"
-                    touch fizz
+                    apt update
                 '''
             }
         }
