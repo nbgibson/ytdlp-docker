@@ -4,7 +4,7 @@ pipeline {
         stage('Docker Setup') {
             steps {
                 sh '''
-                    apt update
+                    whoami
                 '''
             }
         }
