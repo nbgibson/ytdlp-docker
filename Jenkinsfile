@@ -1,10 +1,20 @@
 pipeline {
     agent any
     stages {
-        stage('Docker Setup') {
+        stage('Make foo') {
             steps {
                 sh '''
-                    whoami
+                    touch foo
+                '''
+            }
+        }
+        stage('Check foo') {
+            when {
+                expression { test -f "foo" }
+            }
+            steps {
+                sh '''
+                    echo "bar"
                 '''
             }
         }
