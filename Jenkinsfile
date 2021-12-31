@@ -14,7 +14,6 @@ pipeline {
                     '''
                 }     
             }
-        }
             steps {
                 sh '''
                     echo "Installing docker..."
