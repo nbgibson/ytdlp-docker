@@ -10,7 +10,7 @@ pipeline {
         }
         stage('Check foo') {
             when {
-                expression { test -f "foo" }
+                expression { test -f foo }
             }
             steps {
                 sh '''
