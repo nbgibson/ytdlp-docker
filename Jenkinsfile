@@ -8,6 +8,7 @@ pipeline {
                         export dockerInstall=true
                     else
                         export dockerIntall=false
+                    fi
                 '''
             }
         }
