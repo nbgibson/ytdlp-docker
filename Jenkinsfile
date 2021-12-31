@@ -1,20 +1,15 @@
 pipeline {
     agent any
     stages {
-        stage('Make foo') {
-            steps {
-                sh '''
-                    touch foo
-                '''
-            }
-        }
-        stage('Check foo') {
+        stage('Docker Install') {
             when {
-                expression { return "test -f foo" }
+                not{
+                    expression { return "test -f foo" }
+                }
             }
             steps {
                 sh '''
-                    echo "bar"
+                    echo "Installing docker..."
                 '''
             }
         }
