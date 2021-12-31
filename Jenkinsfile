@@ -11,7 +11,9 @@ pipeline {
         stage('Docker Install') {
             when {
                 not{
-                    "test -f foo"
+                    expression {
+                        "test -f foo"
+                    }     
                 }
             }
             steps {
