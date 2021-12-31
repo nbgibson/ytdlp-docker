@@ -4,7 +4,7 @@ pipeline {
         stage('Make foo') {
             steps {
                 sh '''
-                    touch foo
+                    touch bar
                 '''
             }
         }
