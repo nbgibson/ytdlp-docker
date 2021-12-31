@@ -7,7 +7,7 @@ pipeline {
                     if (systemctl is-active --quiet docker) ; then
                         export dockerInstall=true
                     else
-                        export dockerIntall=false
+                        export dockerInstall=false
                     fi
                 '''
             }
