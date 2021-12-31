@@ -10,7 +10,7 @@ pipeline {
         }
         stage('Check foo') {
             when {
-                return expression { test -f foo == true }
+                expression { return readFile('foo').contains('') }
             }
             steps {
                 sh '''
