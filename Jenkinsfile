@@ -4,11 +4,12 @@ pipeline {
         stage('Docker Check') {
             steps {
                 sh '''
+                    touch dockerStatus
                     if (systemctl is-active --quiet docker) ; then
-                        env.dockerInstall=true
+                        echo 'true' >> dockerStatus
                         echo "Setting dockerInstall to 'true'"
                     else
-                        env.dockerInstall=false
+                        echo 'false' >> dockerStatus
                         echo "Setting dockerInstall to 'false'"
                     fi
                 '''
@@ -17,7 +18,7 @@ pipeline {
         stage('Var sanity check') {
             steps {
                 sh '''
-                    echo ${env.dockerInstall}
+                    cat dockerStatus
                 '''
             }
         }
