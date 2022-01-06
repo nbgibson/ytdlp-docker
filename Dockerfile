@@ -1,0 +1,18 @@
+FROM alpine:latest
+#Update packages and install dependencies
+RUN apk update && apk upgrade && apk add --no-cache python3 && apk add ffmpeg
+#Install ytdlp, brand it as ytdl, and fix Python command to use Python3
+RUN wget https://github.com/yt-dlp/yt-dlp/releases/latest/download/yt-dlp -O /usr/local/bin/youtube-dl && chmod a+rx /usr/local/bin/youtube-dl && ln -s /usr/bin/python3 /usr/local/bin/python
+#Create ytdl working dir
+RUN mkdir /ytdl
+#Copy in start script and make it executable
+COPY ./start.sh /ytdl/start/start.sh
+RUN chmod +x /ytdl/start/start.sh
+#Create ytdl user so root isn't executing
+RUN adduser -D ytdl && chown -R ytdl /ytdl
+#Change to ytdl user
+USER ytdl
+#Change to ytdl home
+WORKDIR /ytdl
+#Execute start script 
+CMD ./start/start.sh
