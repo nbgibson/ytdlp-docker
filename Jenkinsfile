@@ -4,7 +4,7 @@ pipeline {
         stage('Docker Check') {
             steps {
                 sh '''
-                    cat Dockerfile
+                    docker build .
                 '''
             }
         }
