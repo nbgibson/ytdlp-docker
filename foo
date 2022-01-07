@@ -1,1 +1,0 @@
---label build_date=$(date +%Y-%m-%d) -t $DOCKERUSER/ytdl:$(cat version)
