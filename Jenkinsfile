@@ -17,8 +17,9 @@ pipeline {
         stage('Docker Build') {
             steps {
                 sh '''
+                    echo $DOCKERUSER
                     echo "$DOCKERTOKEN" | docker login -u $DOCKERUSER --password-stdin 
-                    docker build --label build_date=$(date +%Y-%m-%d) -t $DOCKERUSER/ytdl:$(cat version) .
+                    docker build . --label build_date=$(date +%Y-%m-%d) -t $(echo $DOCKERUSER/ytdl:$(cat version)
                 '''
             }
         }
