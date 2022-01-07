@@ -17,7 +17,7 @@ pipeline {
         stage('Docker Build') {
             steps {
                 sh '''
-                    echo "$DOCKERTOKEN" | sudo docker login -u $DOCKERUSER --password-stdin 
+                    echo "$DOCKERTOKEN" | docker login -u $DOCKERUSER --password-stdin 
                     //docker build --label build_date=$(date +%Y-%m-%d) . -t nbgibson/$(cat version)
                 '''
             }
