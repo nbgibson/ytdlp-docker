@@ -7,7 +7,7 @@ pipeline {
                 spec:
                   containers:
                   - name: buildagent
-                    image: nbgibson/dockerbuildagent:1.0
+                    image: nbgibson/dockerbuildagent:1.1
                     tty: true
                   imagePullSecrets:
                   - name: regcred
@@ -43,7 +43,6 @@ pipeline {
                     docker push $(echo $DOCKERUSER)/ytdl:latest
                     '''
                 }
-                
             }
         }
     }
