@@ -28,7 +28,7 @@ pipeline {
                 curl https://api.github.com/repos/yt-dlp/yt-dlp/releases/latest -s | jq .name -r | cut -c 8- > version
                 cat version
                 echo "Setting Jenkins var"
-                env.VERSION = $(cat version)
+                ${env.VERSION} = $(cat version)
                 echo "echoing Jenkins var"
                 echo "env.VERSION = ${env.VERSION}" 
                 '''
