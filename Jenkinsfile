@@ -42,7 +42,7 @@ pipeline {
                 docker build --build-arg VERSION="${VERSION}" . --label build_date=$(date +%Y-%m-%d) -t $(echo $DOCKERUSER)/ytdl:latest
                 docker push $(echo $DOCKERUSER)/ytdl:latest
                 '''
-            }*/
-        }
+            }
+        }*/
     }
 }
