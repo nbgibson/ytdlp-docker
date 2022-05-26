@@ -25,7 +25,9 @@ pipeline {
             steps {
                 sh '''
                 curl https://api.github.com/repos/yt-dlp/yt-dlp/releases/latest -s | jq .name -r | cut -c 8- > version
-                echo $version 
+                cat version
+                ${env.VERSION} = $(cat version)
+                echo "env.VERSION = ${env.VERSION}" 
                 '''
             }
         }
