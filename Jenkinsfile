@@ -16,8 +16,9 @@ pipeline {
   }*/
 
     environment {
-        DOCKERUSER = credentials('dockerUsername')
+        DOCKERUSER  = credentials('dockerUsername')
         DOCKERTOKEN = credentials('dockerToken')
+        VERSION     = 'asdf'
     }
 
     stages {
