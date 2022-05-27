@@ -18,7 +18,6 @@ pipeline {
     environment {
         DOCKERUSER  = credentials('dockerUsername')
         DOCKERTOKEN = credentials('dockerToken')
-        VERSION     = 'asdf'
     }
 
     stages {
@@ -27,25 +26,20 @@ pipeline {
                 sh '''
                 curl https://api.github.com/repos/yt-dlp/yt-dlp/releases/latest -s | jq .name -r | cut -c 8- > version
                 cat version
-                echo "Setting Jenkins var"
-                ${env.VERSION} = $(cat version)
-                echo "echoing Jenkins var"
-                echo "env.VERSION = ${env.VERSION}" 
                 '''
             }
         }
-        /*stage('Docker Build') {
+        stage('Docker Build') {
             steps {
                 sh '''
-                echo $DOCKERUER
-                cat version
+                VERSION = $(cat version)
                 echo "$DOCKERTOKEN" | docker login -u $DOCKERUSER --password-stdin 
-                docker build --build-arg VERSION="${VERSION}" . --label build_date=$(date +%Y-%m-%d) -t $(echo $DOCKERUSER)/ytdl:$(cat version)
-                docker push $(echo $DOCKERUSER)/ytdl:$(cat version)
-                docker build --build-arg VERSION="${VERSION}" . --label build_date=$(date +%Y-%m-%d) -t $(echo $DOCKERUSER)/ytdl:latest
-                docker push $(echo $DOCKERUSER)/ytdl:latest
+                docker build --build-arg VERSION="$(echo $VERSION)" . --label build_date=$(date +%Y-%m-%d) -t $(echo $DOCKERUSER)/ytdl:$(cat version)
+                #docker push $(echo $DOCKERUSER)/ytdl:$(cat version)
+                #docker build --build-arg VERSION="${VERSION}" . --label build_date=$(date +%Y-%m-%d) -t $(echo $DOCKERUSER)/ytdl:latest
+                #docker push $(echo $DOCKERUSER)/ytdl:latest
                 '''
             }
-        }*/
+        }
     }
 }
