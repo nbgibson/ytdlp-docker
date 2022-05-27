@@ -35,9 +35,9 @@ pipeline {
                 ytdlpVersion=$(cat version)
                 echo "$DOCKERTOKEN" | docker login -u $DOCKERUSER --password-stdin 
                 docker build --build-arg VERSION="$(cat version)" . --label build_date=$(date +%Y-%m-%d) -t $(echo $DOCKERUSER)/ytdl:$(cat version)
-                #docker push $(echo $DOCKERUSER)/ytdl:$(cat version)
-                #docker build --build-arg VERSION="$(cat version)" . --label build_date=$(date +%Y-%m-%d) -t $(echo $DOCKERUSER)/ytdl:latest
-                #docker push $(echo $DOCKERUSER)/ytdl:latest
+                docker push $(echo $DOCKERUSER)/ytdl:$(cat version)
+                docker build --build-arg VERSION="$(cat version)" . --label build_date=$(date +%Y-%m-%d) -t $(echo $DOCKERUSER)/ytdl:latest
+                docker push $(echo $DOCKERUSER)/ytdl:latest
                 '''
             }
         }
