@@ -32,7 +32,7 @@ pipeline {
         stage('Docker Build') {
             steps {
                 sh '''
-                ytdlpVersion = $(cat version)
+                ytdlpVersion=$(cat version)
                 echo "$DOCKERTOKEN" | docker login -u $DOCKERUSER --password-stdin 
                 docker build --build-arg VERSION="$(echo $ytdlpVersion)" . --label build_date=$(date +%Y-%m-%d) -t $(echo $DOCKERUSER)/ytdl:$(cat version)
                 #docker push $(echo $DOCKERUSER)/ytdl:$(cat version)
