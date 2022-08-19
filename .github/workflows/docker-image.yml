@@ -15,7 +15,8 @@ jobs:
       - name: Determine latest ytdlp version
         run: curl https://api.github.com/repos/yt-dlp/yt-dlp/releases/latest -s | jq .name -r | cut -c 8- > version
       - name: Build current Docker image
-        env: DOCKERUSER  = ${{ secrets.DOCKERUSER }}
+        env: 
+          DOCKERUSER  = ${{ secrets.DOCKERUSER }}
           DOCKERTOKEN = ${{ secrets.DOCKERTOKEN }}
         run: |
           echo "$DOCKERTOKEN" | docker login -u $DOCKERUSER --password-stdin 
