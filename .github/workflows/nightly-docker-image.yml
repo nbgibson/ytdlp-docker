@@ -1,0 +1,24 @@
+name: Docker Image CI ytdlp nightly
+
+on:
+  schedule:
+    - cron: 5 12 * * *
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+      - name: Determine latest ytdlp version
+        run: curl https://api.github.com/repos/yt-dlp/yt-dlp-nightly-builds/releases/latest -s | jq .name -r | cut -c 16- > version
+      - name: Build current Docker image
+        env:
+          DOCKERUSER: ${{ secrets.DOCKERUSER }}
+          DOCKERTOKEN: ${{ secrets.DOCKERTOKEN }}
+        run: |
+          echo "$DOCKERTOKEN" | docker login -u $DOCKERUSER --password-stdin
+          docker build --build-arg VERSION="$(cat version)" . --label build_date=$(date +%Y-%m-%d) -t $(echo $DOCKERUSER)/ytdl:$(cat version)
+          docker push $(echo $DOCKERUSER)/ytdl:$(cat version)
+          docker build --build-arg VERSION="$(cat version)" . --label build_date=$(date +%Y-%m-%d) -t $(echo $DOCKERUSER)/ytdl:latest
+          docker push $(echo $DOCKERUSER)/ytdl-nightly:latest
