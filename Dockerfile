@@ -2,7 +2,7 @@ FROM alpine:latest
 # Get tagged version to pull from Jenkins
 ARG VERSION
 # Update packages and install dependencies
-RUN apk update && apk upgrade && apk add --no-cache python3 && apk add ffmpeg
+RUN apk update && apk upgrade && apk add --no-cache python3 && apk add ffmpeg && apk add curl
 # Install Deno
 RUN curl -fsSL https://deno.land/install.sh | sh
 # Install ytdlp, brand it as ytdl, and fix Python command to use Python3
