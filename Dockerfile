@@ -2,9 +2,9 @@ FROM alpine:latest
 # Get tagged version to pull from Jenkins
 ARG VERSION
 # Update packages and install dependencies
-RUN apk update && apk upgrade && apk add --no-cache python3 && apk add ffmpeg && apk add curl
-# Install Deno
-RUN curl -fsSL https://deno.land/install.sh | sh
+RUN apk update && apk upgrade && apk add --no-cache python3 && apk add ffmpeg && apk add --no-cache deno
+# Install Deno from Alpine repository (compiled for musl libc)
+RUN apk add --no-cache deno
 # Install ytdlp, brand it as ytdl, and fix Python command to use Python3
 RUN wget https://github.com/yt-dlp/yt-dlp/releases/download/$VERSION/yt-dlp -O /usr/local/bin/youtube-dl && chmod a+rx /usr/local/bin/youtube-dl && ln -s /usr/bin/python3 /usr/local/bin/python
 # Install Javascript challenge thingy, we're not worried about breaking sys packages here.
