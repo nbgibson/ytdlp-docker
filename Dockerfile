@@ -7,6 +7,8 @@ RUN apk update && apk upgrade && apk add --no-cache python3 && apk add ffmpeg &&
 RUN curl -fsSL https://deno.land/install.sh | sh
 # Install ytdlp, brand it as ytdl, and fix Python command to use Python3
 RUN wget https://github.com/yt-dlp/yt-dlp/releases/download/$VERSION/yt-dlp -O /usr/local/bin/youtube-dl && chmod a+rx /usr/local/bin/youtube-dl && ln -s /usr/bin/python3 /usr/local/bin/python
+# Install Javascript challenge thingy, we're not worried about breaking sys packages here.
+RUN apk add --no-cache py3-pip && pip install --break-system-packages -U yt-dlp-ejs
 # Create ytdl working dir
 RUN mkdir -p /ytdl/start
 # Copy in start script and make it executable
