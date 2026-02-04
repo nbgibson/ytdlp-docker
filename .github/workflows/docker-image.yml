@@ -12,6 +12,8 @@ on:
         - info
         - warning
         - debug
+  repository_dispatch:
+    types: [external_repo_updated]
   
 jobs:
   build:
