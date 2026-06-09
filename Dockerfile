@@ -4,10 +4,12 @@ ARG VERSION
 
 # Install all runtime dependencies in one layer
 RUN apk add --no-cache \
-      python3=3.14.5-r0 \
-      py3-pip=26.1.2-r0 \
-      ffmpeg=8.1.1-r0 \
-      deno=2.7.4-r2
+      python3 \
+      py3-pip \
+      ffmpeg \
+      deno
+
+COPY requirements.txt /tmp/requirements.txt
 
 # Download yt-dlp, symlink python3 as python, and install the EJS challenge plugin.
 # py3-pip on Alpine enforces PEP 668; --break-system-packages is required in a container context.
@@ -15,7 +17,7 @@ RUN wget "https://github.com/yt-dlp/yt-dlp/releases/download/${VERSION}/yt-dlp" 
       -O /usr/local/bin/youtube-dl \
     && chmod a+rx /usr/local/bin/youtube-dl \
     && ln -s /usr/bin/python3 /usr/local/bin/python \
-    && pip install --break-system-packages yt-dlp-ejs==0.8.0
+    && pip install --break-system-packages -r /tmp/requirements.txt
 
 # Set up working dir, placeholder start script, and non-root user
 RUN mkdir -p /ytdl/start \
