@@ -16,13 +16,13 @@ on:
         - debug
   repository_dispatch:
     types: [external_repo_updated]
-  
+
 jobs:
   build:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v3.6.0
+      - uses: actions/checkout@v6
       - name: Determine latest ytdlp version
         run: curl https://api.github.com/repos/yt-dlp/yt-dlp/releases/latest -s | jq .name -r | cut -c 8- > version
       - name: Build current Docker image
@@ -30,7 +30,7 @@ jobs:
           DOCKERUSER: ${{ secrets.DOCKERUSER }}
           DOCKERTOKEN: ${{ secrets.DOCKERTOKEN }}
         run: |
-          echo "$DOCKERTOKEN" | docker login -u $DOCKERUSER --password-stdin 
+          echo "$DOCKERTOKEN" | docker login -u $DOCKERUSER --password-stdin
           docker build --build-arg VERSION="$(cat version)" . --label build_date=$(date +%Y-%m-%d) -t $(echo $DOCKERUSER)/ytdl:$(cat version)
           docker push $(echo $DOCKERUSER)/ytdl:$(cat version)
           docker build --build-arg VERSION="$(cat version)" . --label build_date=$(date +%Y-%m-%d) -t $(echo $DOCKERUSER)/ytdl:latest
