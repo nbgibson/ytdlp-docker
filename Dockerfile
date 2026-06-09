@@ -1,25 +1,30 @@
-FROM alpine:latest
-# Get tagged version to pull from Jenkins
+FROM alpine:3.24.0
+
 ARG VERSION
-# Update packages and install dependencies
-RUN apk update && apk upgrade && apk add --no-cache python3 && apk add ffmpeg && apk add --no-cache deno
-# Install Deno from Alpine repository (compiled for musl libc)
-RUN apk add --no-cache deno
-# Install ytdlp, brand it as ytdl, and fix Python command to use Python3
-RUN wget https://github.com/yt-dlp/yt-dlp/releases/download/$VERSION/yt-dlp -O /usr/local/bin/youtube-dl && chmod a+rx /usr/local/bin/youtube-dl && ln -s /usr/bin/python3 /usr/local/bin/python
-# Install Javascript challenge thingy, we're not worried about breaking sys packages here.
-RUN apk add --no-cache py3-pip && pip install --break-system-packages -U yt-dlp-ejs
-# Create ytdl working dir
-RUN mkdir -p /ytdl/start
-# Copy in start script and make it executable
-RUN echo $'------------ \n Please mount a volume to \'/ytdl/start\' to replace this file with a start.sh that contains the desired commands and parameters \n------------' >> /ytdl/start/start.sh
-# Enable start.sh dummy file execution
-RUN chmod +x /ytdl/start/start.sh
-# Create ytdl user so root isn't executing
-RUN adduser -D ytdl && chown -R ytdl /ytdl
-# Change to ytdl user
+
+# Install all runtime dependencies in one layer
+RUN apk add --no-cache \
+      python3=3.14.5-r0 \
+      py3-pip=26.1.2-r0 \
+      ffmpeg=8.1.1-r0 \
+      deno=2.7.4-r2
+
+# Download yt-dlp, symlink python3 as python, and install the EJS challenge plugin.
+# py3-pip on Alpine enforces PEP 668; --break-system-packages is required in a container context.
+RUN wget "https://github.com/yt-dlp/yt-dlp/releases/download/${VERSION}/yt-dlp" \
+      -O /usr/local/bin/youtube-dl \
+    && chmod a+rx /usr/local/bin/youtube-dl \
+    && ln -s /usr/bin/python3 /usr/local/bin/python \
+    && pip install --break-system-packages yt-dlp-ejs==0.8.0
+
+# Set up working dir, placeholder start script, and non-root user
+RUN mkdir -p /ytdl/start \
+    && printf '#!/bin/sh\necho "Mount a volume to /ytdl/start replacing start.sh with your yt-dlp commands."\n' \
+       > /ytdl/start/start.sh \
+    && chmod +x /ytdl/start/start.sh \
+    && adduser -D ytdl \
+    && chown -R ytdl /ytdl
+
 USER ytdl
-# Change to ytdl home
 WORKDIR /ytdl
-# Execute start script
-CMD ./start/start.sh
+CMD ["./start/start.sh"]
